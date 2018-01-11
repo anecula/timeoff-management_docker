@@ -2,7 +2,7 @@ FROM node
 
 WORKDIR /opt
 
-RUN git clone https://github.com/timeoff-management/application.git timeoff-management 
+RUN git clone https://github.com/eaudeweb/lamunca-management.git timeoff-management 
 
 WORKDIR /opt/timeoff-management
 RUN git checkout v0.6.2

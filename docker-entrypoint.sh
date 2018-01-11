@@ -77,7 +77,7 @@ cat > /opt/timeoff-management/config/db.json << EOF
   "test": {
     "username": "root",
     "password": null,
-    "database": "database_test",
+    "database": "database_test_ANECULA",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

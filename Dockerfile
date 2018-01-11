@@ -5,7 +5,6 @@ WORKDIR /opt
 RUN git clone https://github.com/anecula/timeoff-management-application.git timeoff-management 
 
 WORKDIR /opt/timeoff-management
-RUN git checkout v0.6.2
 RUN npm install mysql && npm install
 
 EXPOSE 3000

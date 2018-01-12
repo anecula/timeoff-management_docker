@@ -2,7 +2,7 @@ FROM node
 
 WORKDIR /opt
 
-RUN git clone https://github.com/anecula/timeoff-management-application.git timeoff-management 
+RUN git clone https://github.com/anecula/timeoff-management-application.git timeoff-management  
 
 WORKDIR /opt/timeoff-management
 RUN npm install mysql && npm install

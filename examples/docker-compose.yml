@@ -1,91 +1,71 @@
-version: '2'
 
+
+
+version: '2'
 services:
   db:
-    image: mariadb:10.2.12
-    container_name: lamunca.db
+    image: 'mariadb:10.2.12'
+    container_name: 'lalucru_db'
     restart: unless-stopped
     volumes:
-      - data:/var/lib/mysql
+    - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=pwd
-      - MYSQL_DATABASE=db
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=userpwd
+      - MYSQL_ROOT_PASSWORD=m3ta11Ic4
+      - MYSQL_DATABASE=lalucru
+      - MYSQL_USER=lalucru
+      - MYSQL_PASSWORD=pik4c0in
+
+
+
+  staging_app:
+    image: thperret/timeoff-management:0.6.2
+    container_name: 'staging_app'
+    links:
+      - db:db
+    restart: unless-stopped
+    volumes:
+      - config:/opt/timeoff-management/config
+    ports:
+      - '3009:3000'
+    environment:
+      - ALLOW_ACCOUNTS_CREATION=false  
+      - APP_URL=https://lamunca.eaudeweb.ro
+      - NODE_ENV=production
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=lalucru
+      - MYSQL_USER=lalucru
+      - MYSQL_PASSWORD=pik4c0in
+
+
+
 
   app:
-    image: eaudeweb/lamunca-management
-    container_name: lamunca.app
-    depends_on:
-      - db
+    image: thperret/timeoff-management:0.6.2
+    container_name: 'lalucru_app'
+    links:
+      - db:db
     restart: unless-stopped
     volumes:
-      - config:/app/lamunca/config
+      - config:/opt/timeoff-management/config
     ports:
-      - 3288:3000"
+      - '3000:3000'
+      - '8888:80'
     environment:
       - ALLOW_ACCOUNTS_CREATION=true  # set this to false to disable public account creation (set it once you have created your company to disable public regitration)
-      - APP_URL=
-      - PROMOTION_URL= # uncomment and set this if you want to use you URL for footer promotion url
+      - APP_URL=https://lalucru.eaudeweb.ro
       - NODE_ENV=production
-      - SENDER_MAIL=contact@eaudeweb.ro # only set this if you want mail support
-      - SMTP_HOST=localhost
-      - SMTP_PORT=25
+      #- SENDER_MAIL=helpdesk@eaudeweb.ro
+      #- SMTP_HOST=127.0.0.1
+      #- SMTP_PORT=25
+    # - SMTP_USER=
+    # - SMTP_PASSWORD=
       - MYSQL_HOST=db
-      - MYSQL_USER=user
-      - MYSQL_DATABASE=db
-      - MYSQL_PASSWORD=userpwd
-
-  app2:
-    image: eaudeweb/lamunca-management
-    container_name: lamunca.app2
-    depends_on:
-      - db
-    restart: unless-stopped
-    volumes:
-      - config:/app/lamunca/config
-    ports:
-      - "3002:3000"
-    environment:
-      - ALLOW_ACCOUNTS_CREATION=true  # set this to false to disable public account creation (set it once you have created your company to disable public regitration)
-      - APP_URL=
-      - PROMOTION_URL= # uncomment and set this if you want to use you URL for footer promotion url
-      - NODE_ENV=production
-      - SENDER_MAIL=contact@eaudeweb.ro # only set this if you want mail support
-      - SMTP_HOST=localhost
-      - SMTP_PORT=25
-      - MYSQL_HOST=db
-      - MYSQL_USER=user
-      - MYSQL_DATABASE=db
-      - MYSQL_PASSWORD=userpwd
+      - MYSQL_USER=lalucru
+      - MYSQL_DATABASE=lalucru
+      - MYSQL_PASSWORD=pik4c0in
 
 volumes:
-  data:
+  db:
     driver: local
   config:
     driver: local
-
-app:
-  image: thperret/timeoff-management:0.6.2
-  container_name: 'timeoff_app'
-  links:
-    - db:db
-  restart: unless-stopped
-  volumes:
-    - ./volumes/config:/opt/timeoff-management/config
-  ports:
-    - '3000:3000'
-  environment:
-    - ALLOW_ACCOUNTS_CREATION=true  # set this to false to disable public account creation (set it once you have created your company to disable public regitration)
-    - APP_URL=https://timeoff.example.com
-    # - PROMOTION_URL=https://timeoff.example.com # uncomment and set this if you want to use you URL for footer promotion url
-    - NODE_ENV=production
-    # - SENDER_MAIL=timeoff@example.com # only set this if you want mail support
-    # - SMTP_HOST=127.0.0.1
-    # - SMTP_PORT=25
-    # - SMTP_USER=timeoff
-    # - SMTP_PASSWORD=timeoff
-    - MYSQL_HOST=db
-    - MYSQL_USER=timeoff
-    - MYSQL_DATABASE=timeoff
-    - MYSQL_PASSWORD=timeoff

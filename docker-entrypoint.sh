@@ -38,11 +38,11 @@ else
 fi
 
 if [[ -z $APP_URL ]]; then
-	APP_URL=http://app.timeoff.management
+	APP_URL=http://lamunca.eaudeweb.ro
 fi
 
 if [[ -z $PROMOTION_URL ]]; then
-	PROMOTION_URL=http://timeoff.management
+	PROMOTION_URL=http://lamunca.eaudeweb.ro
 fi
 
 if [[ -z $ALLOW_ACCOUNTS_CREATION ]]; then
@@ -77,7 +77,7 @@ cat > /opt/timeoff-management/config/db.json << EOF
   "test": {
     "username": "root",
     "password": null,
-    "database": "database_test_ANECULA",
+    "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
@@ -466,12 +466,12 @@ cat > /opt/timeoff-management/config/localisation.json << EOF
         }
       ]
     },
-    "US" : {
-      "name" : "United States",
+    "RO" : {
+      "name" : "Romania",
       "bank_holidays" : [
         {
           "name" : "New Year Day",
-          "date" : "2016-01-01"
+          "date" : "2018-01-01"
         },
         {
           "name" : "Martin Luther King Day",
@@ -508,4 +508,3 @@ cat > /opt/timeoff-management/config/localisation.json << EOF
 EOF
 
 npm run-script db-update
-npm start
